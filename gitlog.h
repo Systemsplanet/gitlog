@@ -64,9 +64,15 @@ public:
     // Returns false immediately (without broadcasting) if message is empty.
     // Truncation is logged so the caller is never silently misled.
     bool broadcast(const char* message) {
+
         if (!message || message[0] == '\0') {
             Serial.println("ERROR: broadcast() called with empty message.");
             return false;
+        }
+
+        if (strlen(message) >= sizeof(gitlog_message_t::event_msg)) {
+           Serial.println("ERROR: Message exceeded %d bytes.", sizeof(gitlog_message_t::event_msg) - 1);
+           return(false);
         }
 
         size_t msgLen = strlen(message);
