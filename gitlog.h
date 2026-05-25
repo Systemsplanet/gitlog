@@ -11,7 +11,7 @@
 #include <base64.h>
 
 // Shared structures for ESP-NOW payload
-typedef struct { char event_msg[250]; } gitlog_message_t;
+typedef struct { char event_msg[244]; } gitlog_message_t;
 typedef struct { bool success; } gitlog_ack_t;
 
 // ==========================================
