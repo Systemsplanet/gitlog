@@ -46,8 +46,8 @@ void setup() {
   ++bootCount;
   gitlog = new Gitlog();  // get github logger and MAC address
   String msg = "{" +
-     "mac:" + WiFi.macAddress()
-     + ", type:'WAKE_UP_EVENT'
+     "mac:'" + WiFi.macAddress() + "'"
+     + ", type:'WAKE_UP_EVENT'   
      + ", bootCount:" + bootCount
      + "}";
   Serial.println(msg);
@@ -66,10 +66,11 @@ void setup() {
 
   // Configure timer wakeup and sleep
   esp_sleep_enable_timer_wakeup((uint64_t)SLEEP_SECONDS * 1000000ULL);
-  // Isolate RTC domains to drop current consumption to ~5μA
+  // Power down peripherals and fast memory to save energy,
+  // but leave RTC_SLOW_MEM ON so our bootCount survives!
   esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_OFF);
   esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_FAST_MEM, ESP_PD_OPTION_OFF);
-  esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_SLOW_MEM, ESP_PD_OPTION_OFF);
+  esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_SLOW_MEM, ESP_PD_OPTION_ON); // Required for RTC variables!
   esp_deep_sleep_start();       // Does not return
 }
  
