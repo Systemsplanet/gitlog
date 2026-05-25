@@ -1,23 +1,29 @@
 #include "gitlog.h"
 
-// Keep this pointer global so it stays alive
+// Keep this pointer global so it stays alive for the duration of the program.
 GitlogServer* gitlogServer;
 
 void setup() {
-  Serial.begin(115200);
+    Serial.begin(115200);
 
-  // Initialize Server: Connects to Wi-Fi, syncs time, and listens for clients
-  gitlogServer = new GitlogServer(
-    "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN", 
-    "YOUR_GITHUB_USERNAME",              
-    "YOUR_REPO_NAME",                    
-    "YOUR_WIFI_SSID",                    
-    "YOUR_WIFI_PASSWORD"                 
-  );
+    // Initialize Server: connects to Wi-Fi, syncs RTC from GitHub,
+    // and registers the ESP-NOW receive callback.
+    gitlogServer = new GitlogServer(
+        "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN",
+        "YOUR_GITHUB_USERNAME",
+        "YOUR_REPO_NAME",
+        "YOUR_WIFI_SSID",
+        "YOUR_WIFI_PASSWORD"
+    );
 }
 
 void loop() {
-  gitlogServer->process() // finish processing
-  // The server loops endlessly, letting the library handle callbacks in the background
-  delay(1000);
+    // FIX: process() was called on a method that didn't exist in the original.
+    // The method is now defined in GitlogServer and must be called here, from
+    // loop(), so that the GitHub HTTPS upload runs in the main task context —
+    // NOT inside the ESP-NOW receive callback (which is interrupt-level and
+    // cannot safely block for TLS/HTTP).
+    gitlogServer->process();
+
+    delay(100); // Yield to the radio stack between iterations
 }
