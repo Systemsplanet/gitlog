@@ -60,9 +60,8 @@ public:
         esp_now_add_peer(&peerInfo);
     }
 
-    // FIX: Validate and warn if message exceeds the struct's capacity.
-    // Returns false immediately (without broadcasting) if message is empty.
-    // Truncation is logged so the caller is never silently misled.
+    // Validate and warn if message exceeds the struct's capacity.
+    // Returns false immediately (without broadcasting) if message is empty or too large
     bool broadcast(const char* message) {
 
         if (!message || message[0] == '\0') {
@@ -74,7 +73,7 @@ public:
            Serial.println("ERROR: Message exceeded %d bytes.", sizeof(gitlog_message_t::event_msg) - 1);
            return(false);
         }
-
+        
         size_t msgLen = strlen(message);
         if (msgLen > GITLOG_MSG_MAX) {
             Serial.printf("WARNING: Message length %u exceeds max %d — truncated.\n",
