@@ -17,6 +17,7 @@ void setup() {
 }
 
 void loop() {
+  gitlogServer->process() // finish processing
   // The server loops endlessly, letting the library handle callbacks in the background
   delay(1000);
 }
