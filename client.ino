@@ -23,6 +23,8 @@ void setup() {
     delay(500); // Let UART settle
     ++bootCount;
     gitlog = new Gitlog(); // Init ESP-NOW client — MAC address is available after this
+    
+    // NOTE: Keep total msg length under 243 characters or broadcast() will fail.
     String msg = "{"
                  "\"mac\":\"" + WiFi.macAddress() + "\","
                  "\"type\":\"WAKE_UP_EVENT\","
