@@ -1,16 +1,16 @@
 # GitLog: ESP-NOW to GitHub Zero-Config Logging Bridge
 
-GitLog is a lightweight, highly optimized C++ library and architecture for the ESP32. It allows multiple battery-powered ESP32 sensor nodes to wake up, broadcast data, and immediately return to deep sleep without ever connecting to Wi-Fi. 
+GitLog is a lightweight C++ library and architecture for the ESP32. It allows multiple battery-powered ESP32 sensor nodes to wake up, broadcast data, and immediately return to deep sleep without ever connecting to Wi-Fi. 
+Perfect for a Mailbox Sensors or Water Sensors applications.
 
 A central "Bridge" ESP32 listens for these broadcasts via the ESP-NOW protocol, connects to Wi-Fi, and logs the events directly to a GitHub repository as individual text files using the GitHub REST API.
 
 ## 🚀 Key Features
 
-* **Zero-Configuration Clients:** Client sensors require zero network configuration. They do not hold Wi-Fi SSIDs, passwords, or even unique IDs. The bridge dynamically extracts the sensor's hardware MAC address from the packet to use as its Unique GUID.
+* **Zero-Configuration Clients:** Client sensors require zero network configuration. They do not hold Wi-Fi SSIDs, passwords, or even unique IDs. The bridge dynamically extracts the sensor's hardware MAC address from the packet to use as its Globally Unique ID (GUID).
 * **Auto-Channel Hopping & ACK:** Clients automatically sweep standard 2.4GHz Wi-Fi channels (1-11) until they receive an instant ACK (acknowledgment) from the server, preventing packet loss if the router assigns the server a new channel.
-* **NTP-Free Time Syncing:** The server completely bypasses external NTP servers. It extracts the HTTP `Date` header from GitHub's API responses to perfectly sync and dynamically correct the ESP32's internal RTC down to the second.
-* **Anti-Fragmentation Memory Management:** Instead of downloading and appending to a massive log file (which destroys ESP32 RAM), the server pushes a new `YYYYMMDD-HHMMSS-[MAC].txt` file for every event. Memory is strictly stack-allocated.
-
+* **Time Syncing:** Server extracts the HTTP `Date` header from GitHub's API responses to perfectly sync and dynamically correct the ESP32's internal RTC down to the second.
+* **Log File:** `YYYYMMDD-HHMMSS-[MAC].txt` file for every event. 
 ## 🏗️ System Architecture
 
 1. **Client Node:** Wakes from Deep Sleep -> Sweeps channels broadcasting via ESP-NOW -> Receives ACK -> Sleeps.
