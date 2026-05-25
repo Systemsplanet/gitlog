@@ -34,7 +34,7 @@ void setup() {
 
     // Broadcast event and wait for server ACK
     if (!gitlog->broadcast(msg.c_str())) {
-        Serial.println("ERROR: Failed to reach server. Event lost.");
+        Serial.println("ERROR: Event discarded.");
     }
 
     esp_sleep_wakeup_cause_t cause = esp_sleep_get_wakeup_cause();
