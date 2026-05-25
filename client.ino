@@ -12,8 +12,7 @@
 #include <WiFi.h>
 #define SLEEP_FOREVER (60ULL * 60ULL * 24ULL * 365ULL * 100ULL * 1000000ULL)
 
-// RTC_DATA_ATTR places this variable in RTC slow memory,
-// which stays powered during Deep Sleep.
+// RTC slow memory stays powered during Deep Sleep.
 // bootCount persists across sleep cycles
 // but resets to 0 when power is removed or the chip is physically reset.
 RTC_DATA_ATTR int bootCount = 0;
