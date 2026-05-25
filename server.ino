@@ -18,9 +18,7 @@ void setup() {
 }
 
 void loop() {
-    // FIX: process() was called on a method that didn't exist in the original.
-    // The method is now defined in GitlogServer and must be called here, from
-    // loop(), so that the GitHub HTTPS upload runs in the main task context —
+    // GitHub HTTPS upload runs in the main task context —
     // NOT inside the ESP-NOW receive callback (which is interrupt-level and
     // cannot safely block for TLS/HTTP).
     gitlogServer->process();
